@@ -7,7 +7,12 @@
       "mcp__claude-in-chrome__computer",
       "mcp__claude-in-chrome__browser_batch",
       "PowerShell(node --version)",
-      "PowerShell(python --version)"
+      "PowerShell(python --version)",
+      "PowerShell(git ls-remote origin)",
+      "PowerShell(git checkout -b update-name-shiv-sharma)",
+      "PowerShell(git add index.html portfolio-website.zip)",
+      "PowerShell(git push -u origin update-name-shiv-sharma)",
+      "PowerShell($paths = @\\(\"$env:ProgramFiles\\\\GitHub CLI\\\\gh.exe\", \"${env:ProgramFiles\\(x86\\)}\\\\GitHub CLI\\\\gh.exe\", \"$env:LOCALAPPDATA\\\\Programs\\\\GitHub CLI\\\\gh.exe\"\\); $paths | Where-Object { Test-Path $_ })"
     ]
   }
 }

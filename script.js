@@ -27,6 +27,7 @@ async function loadProjects() {
           title: r.title,
           description: r.description || '',
           tags: r.tags || [],
+          category: r.category || '',
           platform: r.platform,
           videoId: r.video_id,
           featured: !!r.featured,
@@ -53,54 +54,83 @@ function embedUrl(p) {
 }
 
 // ---------------- Rendering ----------------
-function renderProjects(projects) {
-  const grid = document.getElementById('projects-grid');
-  grid.innerHTML = '';
+function buildCard(p) {
+  const card = document.createElement('article');
+  card.className = `card reveal${p.featured ? ' card-wide' : ''}`;
 
-  projects.forEach((p) => {
-    const card = document.createElement('article');
-    card.className = `card reveal${p.featured ? ' card-wide' : ''}`;
+  const tags = (p.tags || [])
+    .map((t) => `<span>${escapeHtml(t)}</span>`)
+    .join('');
 
-    const tags = (p.tags || [])
-      .map((t) => `<span>${escapeHtml(t)}</span>`)
-      .join('');
+  card.innerHTML = `
+    <div class="video-frame">
+      <button class="video-facade" aria-label="Play ${escapeHtml(p.title)}">
+        <img src="${thumbnailUrl(p)}" alt="" loading="lazy" />
+        <span class="play-btn" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        </span>
+      </button>
+    </div>
+    <div class="card-body">
+      <div class="card-tags">${tags}</div>
+      <h3>${escapeHtml(p.title)}</h3>
+      <p>${escapeHtml(p.description)}</p>
+    </div>
+  `;
 
-    card.innerHTML = `
-      <div class="video-frame">
-        <button class="video-facade" aria-label="Play ${escapeHtml(p.title)}">
-          <img src="${thumbnailUrl(p)}" alt="" loading="lazy" />
-          <span class="play-btn" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor">
-              <path d="M8 5v14l11-7z"/>
-            </svg>
-          </span>
-        </button>
-      </div>
-      <div class="card-body">
-        <div class="card-tags">${tags}</div>
-        <h3>${escapeHtml(p.title)}</h3>
-        <p>${escapeHtml(p.description)}</p>
-      </div>
+  // Click-to-play: swap the thumbnail facade for the real iframe
+  card.querySelector('.video-facade').addEventListener('click', () => {
+    const frame = card.querySelector('.video-frame');
+    frame.innerHTML = `
+      <iframe
+        src="${embedUrl(p)}"
+        title="${escapeHtml(p.title)}"
+        frameborder="0"
+        allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+        allowfullscreen
+      ></iframe>
     `;
-
-    // Click-to-play: swap the thumbnail facade for the real iframe
-    card.querySelector('.video-facade').addEventListener('click', () => {
-      const frame = card.querySelector('.video-frame');
-      frame.innerHTML = `
-        <iframe
-          src="${embedUrl(p)}"
-          title="${escapeHtml(p.title)}"
-          frameborder="0"
-          allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
-          allowfullscreen
-        ></iframe>
-      `;
-    });
-
-    grid.appendChild(card);
   });
 
-  observeReveals(grid.querySelectorAll('.reveal'));
+  return card;
+}
+
+function renderProjects(projects) {
+  const container = document.getElementById('projects-grid');
+  container.innerHTML = '';
+
+  // Group by category, preserving the order categories first appear
+  const groups = new Map();
+  for (const p of projects) {
+    const cat = p.category || 'More Work';
+    if (!groups.has(cat)) groups.set(cat, []);
+    groups.get(cat).push(p);
+  }
+
+  for (const [cat, items] of groups) {
+    const group = document.createElement('div');
+    group.className = 'work-group';
+
+    const title = document.createElement('h3');
+    title.className = 'group-title reveal';
+    title.innerHTML = `
+      <span class="group-dot" aria-hidden="true"></span>
+      ${escapeHtml(cat)}
+      <span class="group-count">${items.length}</span>
+    `;
+    group.appendChild(title);
+
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+    items.forEach((p) => grid.appendChild(buildCard(p)));
+    group.appendChild(grid);
+
+    container.appendChild(group);
+  }
+
+  observeReveals(container.querySelectorAll('.reveal'));
 }
 
 function escapeHtml(str) {
@@ -190,10 +220,27 @@ function initParticles() {
   requestAnimationFrame(tick);
 }
 
+// ---------------- Live views counter ----------------
+function initViewsCounter() {
+  const el = document.getElementById('views-counter');
+  if (!el) return;
+
+  let views = 40_213_067; // starting point — bump this as your real total grows
+  const render = () => { el.textContent = views.toLocaleString('en-US'); };
+  render();
+
+  (function tick() {
+    views += Math.floor(Math.random() * 3) + 1;
+    render();
+    setTimeout(tick, 700 + Math.random() * 1600);
+  })();
+}
+
 // ---------------- Page setup ----------------
 document.getElementById('year').textContent = new Date().getFullYear();
 
 initParticles();
+initViewsCounter();
 observeReveals(document.querySelectorAll('.reveal'));
 
 loadProjects().then(renderProjects);

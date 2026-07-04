@@ -208,6 +208,20 @@ a { color: inherit; text-decoration: none; }
   font-size: 1.25rem;
   margin-right: 0.35rem;
 }
+#views-counter { font-variant-numeric: tabular-nums; }
+.live-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green-bright);
+  margin-right: 0.4rem;
+  box-shadow: 0 0 8px rgba(0, 230, 80, 0.8);
+  animation: live-pulse 1.6s ease-in-out infinite;
+}
+@keyframes live-pulse {
+  50% { opacity: 0.3; }
+}
 
 /* ================================================================
    Sections
@@ -236,8 +250,35 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ================================================================
-   Work grid — video cards
+   Work grid — category groups + video cards
    ================================================================ */
+.work-group { margin-bottom: 3.2rem; }
+.work-group:last-child { margin-bottom: 0; }
+.group-title {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 1.18rem;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+}
+.group-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 10px rgba(0, 230, 80, 0.7);
+  flex-shrink: 0;
+}
+.group-count {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--green);
+  background: var(--green-soft);
+  border: 1px solid var(--border);
+  padding: 0.12rem 0.6rem;
+  border-radius: 999px;
+}
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -328,32 +369,59 @@ a { color: inherit; text-decoration: none; }
 .card-body p { color: var(--dim); font-size: 0.95rem; }
 
 /* ================================================================
-   Process steps
+   Process flow — connected pipeline diagram
    ================================================================ */
-.steps {
+.flow {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.2rem;
   margin-bottom: 2.8rem;
 }
-.step-card {
+.flow-line {
+  position: absolute;
+  top: 22px;
+  left: 12.5%;
+  right: 12.5%;
+  height: 2px;
+  background: repeating-linear-gradient(90deg,
+    rgba(46, 230, 107, 0.55) 0 10px,
+    rgba(46, 230, 107, 0.08) 10px 20px);
+  animation: flow-dash 1s linear infinite;
+}
+@keyframes flow-dash {
+  to { background-position: 20px 0; }
+}
+.flow-step { text-align: center; }
+.flow-node {
+  position: relative;
+  z-index: 1;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  margin: 0 auto 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.88rem;
+  color: #04160a;
+  background: linear-gradient(135deg, #7dfba5, var(--green-bright));
+  box-shadow: 0 0 22px rgba(0, 230, 80, 0.45), 0 0 0 6px rgba(46, 230, 107, 0.08);
+}
+.flow-card {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1.7rem 1.5rem;
+  padding: 1.5rem 1.3rem;
+  height: calc(100% - 60px);
   transition: transform 0.3s, border-color 0.3s;
 }
-.step-card:hover {
+.flow-step:hover .flow-card {
   transform: translateY(-4px);
   border-color: rgba(46, 230, 107, 0.4);
 }
-.step-icon {
-  width: 34px;
-  height: 34px;
-  color: var(--green);
-  margin-bottom: 1.1rem;
-}
-.step-card h3 { font-size: 1.08rem; font-weight: 700; }
+.flow-card h3 { font-size: 1.05rem; font-weight: 700; }
 .step-tag {
   display: inline-block;
   font-size: 0.8rem;
@@ -361,7 +429,7 @@ a { color: inherit; text-decoration: none; }
   color: var(--green);
   margin: 0.15rem 0 0.7rem;
 }
-.step-card p { color: var(--dim); font-size: 0.9rem; }
+.flow-card p { color: var(--dim); font-size: 0.9rem; }
 
 /* ================================================================
    Reviews
@@ -496,7 +564,6 @@ a { color: inherit; text-decoration: none; }
    Responsive
    ================================================================ */
 @media (max-width: 900px) {
-  .steps { grid-template-columns: repeat(2, 1fr); }
   .reviews-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
 }
@@ -504,13 +571,36 @@ a { color: inherit; text-decoration: none; }
   .nav-links { display: none; }
   .grid { grid-template-columns: 1fr; }
   .card-wide { grid-column: span 1; }
-  .steps { grid-template-columns: 1fr; }
   .trust-strip { gap: 1.6rem 2.2rem; }
   .hero { padding-top: 8.5rem; }
+
+  /* Flow becomes a vertical pipeline */
+  .flow { grid-template-columns: 1fr; gap: 1.6rem; }
+  .flow-line { display: none; }
+  .flow-step {
+    position: relative;
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 1rem;
+    text-align: left;
+  }
+  .flow-node { margin: 0; }
+  .flow-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 21px;
+    top: 52px;
+    bottom: -1.6rem;
+    width: 2px;
+    background: rgba(46, 230, 107, 0.25);
+  }
+  .flow-card { height: auto; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
   html { scroll-behavior: auto; }
   #particles { display: none; }
+  .flow-line { animation: none; }
+  .live-dot { animation: none; }
 }
