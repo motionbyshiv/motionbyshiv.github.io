@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sai Sharma — The Fastest Way to Grow With Video</title>
+  <meta name="description" content="Freelance video editor. Reels, shorts, and cinematic edits that stop the scroll." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700;1,800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Ambient background -->
+  <div class="bg-glow" aria-hidden="true"></div>
+  <canvas id="particles" aria-hidden="true"></canvas>
+
+  <!-- Floating pill navbar -->
+  <header class="nav-wrap">
+    <nav class="nav">
+      <a href="#top" class="logo">
+        <span class="logo-mark">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </span>
+        Sai Sharma
+      </a>
+      <div class="nav-links">
+        <a href="#work">Work</a>
+        <a href="#process">Process</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <a href="#contact" class="btn btn-sm">Let's Talk <span class="arrow">›</span></a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <!-- Hero -->
+    <section class="hero">
+      <h1 class="reveal">
+        The <em>Fastest</em> Way to<br />
+        <span class="green">Grow</span> With Video.
+      </h1>
+      <p class="hero-sub reveal">
+        I edit reels, shorts, and cinematic videos that hook viewers in the
+        first three seconds — and turn attention into an audience.
+      </p>
+      <div class="hero-actions reveal">
+        <a href="#contact" class="btn btn-lg">Book an Edit <span class="arrow">›</span></a>
+      </div>
+
+      <div class="trust reveal">
+        <hr class="trust-line" />
+        <p class="eyebrow">The numbers so far</p>
+        <div class="trust-strip">
+          <span><strong>150+</strong> Videos Edited</span>
+          <span><strong>40M+</strong> Views Generated</span>
+          <span><strong>25+</strong> Happy Clients</span>
+          <span><strong>6</strong> Years Editing</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Work -->
+    <section class="section" id="work">
+      <div class="section-head reveal">
+        <h2>My <span class="green">Work</span></h2>
+        <p>Recent reels and edits I'm proud of. Tap any thumbnail to play.</p>
+      </div>
+      <!-- Cards rendered by script.js from Supabase (or projects.js fallback) -->
+      <div class="grid" id="projects-grid"></div>
+      <p class="section-foot reveal">Want the full showreel? <a href="#contact" class="text-link">Get in touch</a></p>
+    </section>
+
+    <!-- Process -->
+    <section class="section" id="process">
+      <div class="section-head reveal">
+        <h2>The <span class="green">Process</span></h2>
+        <p>From raw footage to a post-ready cut — here's how every project runs.</p>
+      </div>
+      <div class="steps">
+        <article class="step-card reveal">
+          <svg class="step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <h3>Find the Hook</h3>
+          <span class="step-tag">(Review)</span>
+          <p>I comb through your footage for the moments that grab attention instantly — the frame people can't scroll past.</p>
+        </article>
+        <article class="step-card reveal">
+          <svg class="step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.12 15.88M14.47 14.48 20 20M8.12 8.12 12 12"/></svg>
+          <h3>Cut the Story</h3>
+          <span class="step-tag">(Edit)</span>
+          <p>Tight pacing, clean structure, zero dead air. Every cut earns its place, every second keeps the viewer watching.</p>
+        </article>
+        <article class="step-card reveal">
+          <svg class="step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12h3l3-8 4 16 3-8h7"/></svg>
+          <h3>Polish the Feel</h3>
+          <span class="step-tag">(Sound &amp; Color)</span>
+          <p>Sound design, captions, motion graphics, and a color grade that gives the edit its own identity.</p>
+        </article>
+        <article class="step-card reveal">
+          <svg class="step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+          <h3>Ship It Fast</h3>
+          <span class="step-tag">(Delivery)</span>
+          <p>Platform-ready exports in every format you need, with quick revision rounds until it's exactly right.</p>
+        </article>
+      </div>
+      <div class="hero-actions reveal">
+        <a href="#contact" class="btn">Start a project today</a>
+      </div>
+    </section>
+
+    <!-- Reviews -->
+    <section class="section" id="reviews">
+      <div class="section-head reveal">
+        <h2>What My <span class="green">Clients</span> Say</h2>
+        <p>Real words from creators and brands I've cut for.</p>
+      </div>
+      <div class="reviews-grid">
+        <article class="review-card reveal">
+          <div class="review-head">
+            <span class="avatar">MK</span>
+            <div><strong>Maya K.</strong><span class="review-role">Lifestyle Creator</span></div>
+          </div>
+          <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <p>"My first reel with Sai hit 1.2M views. The pacing, the captions, the sound — everything just clicked. I've never looked back."</p>
+        </article>
+        <article class="review-card reveal">
+          <div class="review-head">
+            <span class="avatar">DR</span>
+            <div><strong>Daniel R.</strong><span class="review-role">Podcast Host</span></div>
+          </div>
+          <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <p>"Sends back clips faster than I can record them. Our podcast shorts went from 2K to 200K average views in two months."</p>
+        </article>
+        <article class="review-card reveal">
+          <div class="review-head">
+            <span class="avatar">AT</span>
+            <div><strong>Aisha T.</strong><span class="review-role">Brand Manager</span></div>
+          </div>
+          <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <p>"Our launch film looked like it cost 10x the budget. Cinematic grade, perfect sound design, delivered ahead of schedule."</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section" id="contact">
+      <div class="section-head reveal">
+        <h2>Get In <span class="green">Touch</span></h2>
+        <p>Got footage that deserves a better edit? Let's make something people can't scroll past.</p>
+      </div>
+      <div class="contact-card reveal">
+        <h3>Currently taking on new projects</h3>
+        <p>Tell me what you're making — reels, shorts, YouTube videos, brand films — and I'll get back to you within 24 hours.</p>
+        <a href="mailto:saisharma250@gmail.com" class="btn btn-lg btn-wide">Send Me a Brief <span class="arrow">›</span></a>
+        <div class="stack">
+          <span>Premiere Pro</span><span>After Effects</span><span>DaVinci Resolve</span>
+          <span>CapCut</span><span>Audition</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#top" class="logo">
+          <span class="logo-mark">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </span>
+          Sai Sharma
+        </a>
+        <p>The Fastest Way to Grow With Video</p>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="#work">Work</a>
+        <a href="#process">Process</a>
+        <a href="#reviews">Reviews</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="mailto:saisharma250@gmail.com">saisharma250@gmail.com</a>
+        <a href="#">Instagram</a>
+        <a href="#">YouTube</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Sai Sharma. All rights reserved.</span>
+      <span>Cut with care. 🎬</span>
+    </div>
+  </footer>
+
+  <script src="projects.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
