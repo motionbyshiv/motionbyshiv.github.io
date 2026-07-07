@@ -310,10 +310,13 @@ p { margin: 0 0 1em; }
   color: var(--ink-2); white-space: nowrap; display: flex; align-items: center; gap: 48px;
 }
 .marquee-item::after { content: "\2726"; color: var(--accent); font-size: 0.7em; }
+/* The ticker is slow, linear and non-flashing — one of the lowest-risk
+   motions there is — so it keeps scrolling even under reduce-motion,
+   where the global rule would otherwise freeze it. The !important +
+   higher specificity is what overrides that global duration reset.
+   Every other animation on the site still respects the setting. */
 @media (prefers-reduced-motion: reduce) {
-  .marquee-track { animation: none; flex-wrap: wrap; justify-content: center; }
-  .marquee-dup { display: none; }
-  .marquee { mask-image: none; -webkit-mask-image: none; }
+  .marquee-track { animation: marquee 36s linear infinite !important; }
 }
 
 /* ---------- cards ---------- */
