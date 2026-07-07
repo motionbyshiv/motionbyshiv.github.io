@@ -387,9 +387,11 @@
         status.className = "form-status err";
         return;
       }
+      status.textContent = "Sending…";
+      status.className = "form-status";
+
+      /* store the lead in Supabase when configured (best-effort) */
       if (S.supabase.url && S.supabase.anonKey) {
-        status.textContent = "Sending…";
-        status.className = "form-status";
         fetch(S.supabase.url + "/rest/v1/inquiries", {
           method: "POST",
           headers: {
@@ -399,10 +401,30 @@
             Prefer: "return=minimal"
           },
           body: JSON.stringify(data)
+        }).catch(function () {});
+      }
+
+      /* email the inquiry to the studio inbox (FormSubmit AJAX) */
+      if (S.formEndpoint) {
+        fetch(S.formEndpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({
+            _subject: "New inquiry — " + data.name + (data.company ? " (" + data.company + ")" : ""),
+            _template: "table",
+            _replyto: data.email,
+            "Name": data.name,
+            "Email": data.email,
+            "Company": data.company || "—",
+            "Monthly budget": data.budget || "Prefer to discuss",
+            "Message": data.message,
+            "Submitted": new Date().toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }),
+            "Source page": data.page
+          })
         }).then(function (res) {
           if (!res.ok) throw new Error("HTTP " + res.status);
           form.reset();
-          status.textContent = "Thanks — your inquiry is in. We reply within one working day.";
+          status.textContent = "Thanks — your inquiry is in our inbox. We reply within one working day.";
           status.className = "form-status ok";
         }).catch(function () {
           openWhatsAppFallback(data, status);

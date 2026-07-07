@@ -14,6 +14,15 @@ window.SITE = {
 
   email: "saisharma250@gmail.com",
 
+  /* ---- Email delivery (FormSubmit.co — free, no signup) ----
+     Wizard briefs + contact-form inquiries are emailed to the
+     address below via FormSubmit's AJAX endpoint.
+     ONE-TIME ACTIVATION: the first submission from the live site
+     triggers a confirmation email to that inbox — click the
+     "Activate" link in it once, and every submission after that
+     is delivered normally.                                       */
+  formEndpoint: "https://formsubmit.co/ajax/saisharma250@gmail.com",
+
   /* ---- Supabase (optional — leave url empty to disable) ----
      When filled in, the contact form posts to the `inquiries`
      table and the newsletter form to `subscribers`.

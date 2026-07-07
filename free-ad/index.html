@@ -252,39 +252,98 @@
       return true;
     }
 
+    var OUTPUTS = {
+      "Static ad": "1 static hero (feed, display, OOH)",
+      "Video ad": "15s hero ad (paid social, pre-roll)",
+      "UGC-style ad": "Hook-first creator cut (Reels, Shorts)"
+    };
+
+    function moods() {
+      return [val("wz-w1"), val("wz-w2"), val("wz-w3")].filter(Boolean).join(", ");
+    }
+    function submittedAt() {
+      return new Date().toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
+    }
+
+    /* professional plain-text brief — used for the WhatsApp message */
     function briefText() {
-      return [
-        "🎬 Free ad brief — " + state.style,
-        "Brand: " + val("wz-brand"),
-        val("wz-site") ? "Website: " + val("wz-site") : "",
-        selectedCat() ? "Category: " + selectedCat() : "",
-        "Feeling: " + [val("wz-w1"), val("wz-w2"), val("wz-w3")].filter(Boolean).join(", "),
-        val("wz-line") ? "First line: " + val("wz-line") : "",
-        val("wz-never") ? "Never do: " + val("wz-never") : "",
-        "— " + val("wz-name") + " · " + val("wz-email") + (val("wz-phone") ? " · " + val("wz-phone") : "")
-      ].filter(Boolean).join("\n");
+      var L = [];
+      L.push("NEW FREE-AD BRIEF | Motion By Shiv");
+      L.push("Submitted: " + submittedAt());
+      L.push("");
+      L.push("FORMAT");
+      L.push("- " + state.style + " — " + (OUTPUTS[state.style] || ""));
+      L.push("");
+      L.push("BRAND");
+      L.push("- Name: " + val("wz-brand"));
+      if (val("wz-site")) L.push("- Website: " + val("wz-site"));
+      if (selectedCat()) L.push("- Category: " + selectedCat());
+      L.push("");
+      L.push("CREATIVE DIRECTION");
+      if (moods()) L.push("- Mood: " + moods());
+      if (val("wz-line")) L.push("- Opening hook: “" + val("wz-line") + "”");
+      if (val("wz-never")) L.push("- Never-list: " + val("wz-never"));
+      L.push("");
+      L.push("CONTACT");
+      L.push("- Name: " + val("wz-name"));
+      L.push("- Email: " + val("wz-email"));
+      if (val("wz-phone")) L.push("- WhatsApp/Phone: " + val("wz-phone"));
+      L.push("");
+      L.push("Next step: acknowledge within 1 working day; first cut within 2 working days.");
+      L.push("Sent via motionbyshiv.github.io/free-ad");
+      return L.join("\n");
+    }
+
+    /* structured fields — used for the email (FormSubmit renders a table) */
+    function emailFields() {
+      return {
+        _subject: "New free-ad brief — " + val("wz-brand") + " (" + state.style + ")",
+        _template: "table",
+        _replyto: val("wz-email"),
+        "Ad format": state.style + " — " + (OUTPUTS[state.style] || ""),
+        "Brand": val("wz-brand"),
+        "Website": val("wz-site") || "—",
+        "Category": selectedCat() || "—",
+        "Mood (three words)": moods() || "—",
+        "Opening hook": val("wz-line") || "—",
+        "Never-list": val("wz-never") || "—",
+        "Contact name": val("wz-name"),
+        "Contact email": val("wz-email"),
+        "WhatsApp / phone": val("wz-phone") || "—",
+        "Submitted": submittedAt(),
+        "Source": "motionbyshiv.github.io/free-ad"
+      };
     }
 
     function submit() {
       var status = $("wz-status");
-      var payload = {
-        name: val("wz-name"),
-        email: val("wz-email"),
-        company: val("wz-brand"),
-        budget: "Free ad (" + state.style + ")",
-        message: briefText(),
-        page: "/free-ad/"
-      };
+      status.textContent = "Sending your brief…";
+      status.className = "form-status";
+      nextBtn.disabled = true;
+      var finished = false;
       function finish() {
+        if (finished) return;
+        finished = true;
+        nextBtn.disabled = false;
         steps.forEach(function (s) { s.classList.remove("active"); });
         done.classList.add("active");
         document.body.classList.remove("theme-coral");
         footer.hidden = true;
         bar.style.width = "100%";
         stepname.textContent = "Done";
+        status.textContent = "";
       }
-      /* open WhatsApp with the brief pre-filled — the primary channel */
-      window.open("https://wa.me/" + S.whatsappNumber + "?text=" + encodeURIComponent(briefText()), "_blank", "noopener");
+
+      /* 1. email the brief to the studio inbox (FormSubmit AJAX) */
+      var emailSend = S.formEndpoint
+        ? fetch(S.formEndpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Accept: "application/json" },
+            body: JSON.stringify(emailFields())
+          })
+        : Promise.reject(new Error("no endpoint"));
+
+      /* 2. store the lead in Supabase when configured (best-effort) */
       if (S.supabase.url && S.supabase.anonKey) {
         fetch(S.supabase.url + "/rest/v1/inquiries", {
           method: "POST",
@@ -294,12 +353,23 @@
             Authorization: "Bearer " + S.supabase.anonKey,
             Prefer: "return=minimal"
           },
-          body: JSON.stringify(payload)
-        }).then(finish).catch(finish);
-      } else {
-        finish();
+          body: JSON.stringify({
+            name: val("wz-name"),
+            email: val("wz-email"),
+            company: val("wz-brand"),
+            budget: "Free ad (" + state.style + ")",
+            message: briefText(),
+            page: "/free-ad/"
+          })
+        }).catch(function () {});
       }
-      status.textContent = "";
+
+      /* 3. open WhatsApp with the full brief pre-filled — instant channel */
+      window.open("https://wa.me/" + S.whatsappNumber + "?text=" + encodeURIComponent(briefText()), "_blank", "noopener");
+
+      emailSend.then(finish).catch(finish);
+      /* never leave the visitor hanging on a slow network */
+      setTimeout(finish, 4000);
     }
 
     nextBtn.addEventListener("click", function () {
