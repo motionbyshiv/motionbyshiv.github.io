@@ -1,5 +1,4 @@
-# robots.txt — PLACEHOLDER: replace studio.example with the real domain before launch
 User-agent: *
 Allow: /
 
-Sitemap: https://studio.example/sitemap.xml
+Sitemap: https://motionbyshiv.github.io/sitemap.xml
