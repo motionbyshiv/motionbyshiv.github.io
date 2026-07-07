@@ -1,29 +1,54 @@
--- Run this in your Supabase project: SQL Editor → New query → paste → Run.
--- Creates the projects table with public read access (site visitors can
--- read, but only you — via the dashboard — can write).
+-- ================================================================
+-- SUPABASE SETUP — Motion By Shiv
+-- Run in your Supabase project: SQL Editor → New query → paste → Run.
+-- Then put your project URL + anon key into assets/js/config.js.
+--
+-- The site works fully without Supabase (forms fall back to
+-- WhatsApp). Connecting it adds: inquiry storage, lead tracking,
+-- and newsletter subscriptions — all GitHub Pages compatible.
+-- ================================================================
 
-create table if not exists projects (
-  id          bigint generated always as identity primary key,
-  title       text not null,
-  description text default '',
-  tags        text[] default '{}',
-  category    text default '',  -- projects are grouped under this heading on the site
-  platform    text not null default 'youtube' check (platform in ('youtube', 'vimeo')),
-  video_id    text not null,
-  featured    boolean default false,
-  sort_order  int default 0,
-  created_at  timestamptz default now()
+-- ---------- inquiries: contact form submissions ----------
+create table if not exists inquiries (
+  id         bigint generated always as identity primary key,
+  name       text not null,
+  email      text not null,
+  company    text default '',
+  budget     text default '',
+  message    text not null,
+  page       text default '',            -- which page the form was sent from
+  status     text not null default 'new' check (status in ('new', 'replied', 'qualified', 'won', 'lost', 'spam')),
+  created_at timestamptz default now()
 );
 
-alter table projects enable row level security;
+alter table inquiries enable row level security;
 
-create policy "Public read access"
-  on projects for select
-  using (true);
+-- Anonymous visitors may INSERT only (never read others' inquiries).
+create policy "Public can submit inquiries"
+  on inquiries for insert
+  with check (true);
 
--- If you already created the table before the category column existed, run:
--- alter table projects add column if not exists category text default '';
+-- Reading/updating happens via the Supabase dashboard (service role).
 
--- Optional: seed a first row to test
--- insert into projects (title, description, tags, category, platform, video_id, featured, sort_order)
--- values ('My Showreel', 'A minute of my best cuts.', array['Showreel'], 'Showreel', 'youtube', 'YOUR_VIDEO_ID', true, 0);
+-- ---------- subscribers: newsletter / updates ----------
+create table if not exists subscribers (
+  id         bigint generated always as identity primary key,
+  email      text not null unique,
+  source     text default '',
+  created_at timestamptz default now()
+);
+
+alter table subscribers enable row level security;
+
+create policy "Public can subscribe"
+  on subscribers for insert
+  with check (true);
+
+-- ---------- optional next steps (leave commented until needed) ----------
+-- Lead-tracking view: inquiries grouped by status
+-- create view lead_pipeline as
+--   select status, count(*) as leads, max(created_at) as latest
+--   from inquiries group by status;
+
+-- Future client portal: enable Supabase Auth, then add per-client
+-- tables (projects, deliverables, approvals) keyed to auth.uid().

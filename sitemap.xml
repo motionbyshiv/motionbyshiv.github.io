@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- PLACEHOLDER: replace studio.example with the real domain before launch -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://studio.example/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://studio.example/#work</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://studio.example/#pricing</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
+  <url><loc>https://motionbyshiv.github.io/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://motionbyshiv.github.io/services/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://motionbyshiv.github.io/services/motion-design.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://motionbyshiv.github.io/services/video-editing.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://motionbyshiv.github.io/services/ad-creative.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://motionbyshiv.github.io/services/ai-production.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://motionbyshiv.github.io/industries/saas.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://motionbyshiv.github.io/industries/ecommerce.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://motionbyshiv.github.io/industries/web3.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://motionbyshiv.github.io/work/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://motionbyshiv.github.io/work/saas-launch.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://motionbyshiv.github.io/work/ecommerce-engine.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://motionbyshiv.github.io/work/web3-content.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://motionbyshiv.github.io/pricing/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://motionbyshiv.github.io/process/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://motionbyshiv.github.io/about/</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://motionbyshiv.github.io/faq/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://motionbyshiv.github.io/contact/</loc><changefreq>yearly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://motionbyshiv.github.io/free-ad/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>
